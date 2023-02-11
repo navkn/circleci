@@ -1,18 +1,24 @@
 version: 2.1
 orbs:
   salesforce-sfdx: circleci/salesforce-sfdx@2.2.0
-
-workflows:
-  jobs:
-    - build
-
 jobs:
-  build:
+  create-open:
+    executor: sfdx/default
     steps:
       - checkout
-      - run:
-          name: "echo an env var that is part of our project"
-          command: |
-            echo $MY_ENV_VAR # this env var must be set within the project
-            $ echo $MYVAR Zm9vYmFyCg==
+      - sfdx/install:
+          version:"latest"
+      - sfdx/auth:
+          defaultusername: $SC_ORG_USER
+      - sfdx/scratch-create:
+          scratch-alias: SC_ORG
+          scratch-config: ./config/project-scratch-def.json
+      - sfdx/scratch-open:
+          scratch-alias: SC_ORG
+      - sfdx/scratch-delete:
+          scratch-alias: $SC_ORG_USER
 
+workflows:
+  basic-test:
+    jobs:
+      - create-open
