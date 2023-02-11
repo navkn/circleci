@@ -6,8 +6,7 @@ jobs:
     executor: sfdx/default
     steps:
       - checkout
-      - sfdx/install:
-          version:"latest"
+      - sfdx/install
       - sfdx/auth:
           defaultusername: $SC_ORG_USER
       - sfdx/scratch-create:
