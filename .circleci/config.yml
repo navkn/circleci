@@ -1,12 +1,13 @@
 version: 2.1
 orbs:
   salesforce-sfdx: circleci/salesforce-sfdx@2.2.0
+  
 jobs:
   create-open:
-    executor: sfdx/default
+    executor: default
     steps:
       - checkout
-      - sfdx/install
+      - install
       - sfdx/auth:
           defaultusername: $SC_ORG_USER
       - sfdx/scratch-create:
