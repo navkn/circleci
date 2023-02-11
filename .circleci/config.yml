@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  salesforce-sfdx: circleci/salesforce-sfdx@2.2.0
 
 workflows:
   jobs:
@@ -6,11 +8,6 @@ workflows:
 
 jobs:
   build:
-    docker:
-      - image: cimg/base:2021.11
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
       - run:
