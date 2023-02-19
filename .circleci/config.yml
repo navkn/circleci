@@ -24,8 +24,9 @@ jobs:
             echo "decode the server key" 
             echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
             echo "Login to DevHub Org"
-            sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile keys/server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
+            sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile ./server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
             echo "DebHub successfully authenticated"
+            export result="naveen"
   get-sc:
     docker:
       - image: circleci/node:latest
@@ -48,6 +49,7 @@ jobs:
           name: Get a Scratch Org 
           command: |
             echo "check for the scratch org" 
+            echo $result
             if ! [ $SC_ORG_USER ]; 
             then
               echo "Didn't found scrath org user and so going to use the same sc org" ;
@@ -77,6 +79,9 @@ workflows:
   validate:
     jobs:
       - dev-auth
-      - get-sc
-      # - deploy-mdt
-      
+      - get-sc:
+          requires:
+            - dev-auth
+      - deploy-mdt:
+          requires:
+            - get-sc
