@@ -26,7 +26,9 @@ jobs:
             echo "Login to DevHub Org"
             sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile ./server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
             echo "DebHub successfully authenticated"
-            export result="naveen"
+            echo $RESULT
+            RESULT="nithin"
+            echo $RESULT
   get-sc:
     docker:
       - image: circleci/node:latest
