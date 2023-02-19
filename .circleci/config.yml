@@ -1,24 +1,64 @@
 version: 2.1
-orbs:
-  sfdx: circleci/salesforce-sfdx@2.2.0
-  
 jobs:
-  create-open:
-    executor: sfdx/default
+  dev-auth:
+    docker:
+      - image: circleci/node:latest
     steps:
       - checkout
-      - sfdx/install
-      - sfdx/auth:
-          defaultusername: $SC_ORG_USER
-      - sfdx/scratch-create:
-          scratch-alias: SC_ORG
-          scratch-config: ./config/project-scratch-def.json
-      - sfdx/scratch-open:
-          scratch-alias: SC_ORG
-      - sfdx/scratch-delete:
-          scratch-alias: $SC_ORG_USER
-
-workflows:
-  basic-test:
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ checksum "package.json" }}
+            - dependency-cache-
+      - run:
+          name: Install Dependencies
+          command: |
+            echo "Installing Salesforce CLI"
+            sudo npm install -global sfdx-cli
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run: 
+          name: Login to Org
+          command: |
+            echo "decode the server key" 
+            echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
+            echo "Login to DevHub Org"
+            sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile keys/server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
+            echo "DebHub successfully authenticated"
+  get-sc:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ checksum "package.json" }}
+            - dependency-cache-
+      - run:
+          name: Install Dependencies
+          command: |
+            echo "Installing Salesforce CLI"
+            sudo npm install -global sfdx-cli
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run: 
+          name: Get a Scratch Org 
+          command: |
+            echo "check for the scratch org" 
+            if [ -z $<<parameters.consumerKey>> ]; then
+              echo "Authentication requires a consumer key to be present. Please ensure the <<parameters.consumerKey>> env var has been set correctly."
+              exit 1
+            fi
+            echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
+            echo "Login to DevHub Org"
+            sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile keys/server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
+            echo "DebHub successfully authenticated"
+      
+workflow:
+  version: 2.1
+  validate:
     jobs:
-      - create-open
+      - dev-auth
