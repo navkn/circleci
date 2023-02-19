@@ -82,6 +82,6 @@ workflows:
       - get-sc:
           requires:
             - dev-auth
-      - deploy-mdt:
-          requires:
-            - get-sc
+      # - deploy-mdt:
+      #     requires:
+      #       - get-sc
