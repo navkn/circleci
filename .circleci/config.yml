@@ -57,7 +57,7 @@ jobs:
             sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile keys/server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
             echo "DebHub successfully authenticated"
       
-workflow:
+workflows:
   version: 2.1
   validate:
     jobs:
