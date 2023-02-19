@@ -23,12 +23,8 @@ jobs:
           command: |
             echo "decode the server key" 
             echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
-            echo "directories=>"
-            ls -d -l
-            echo "all files=>"
-            ls -a
             echo "Login to DevHub Org"
-            sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile ./server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
+            sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile keys/server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
             echo "DebHub successfully authenticated"
   get-sc:
     docker:
@@ -52,17 +48,35 @@ jobs:
           name: Get a Scratch Org 
           command: |
             echo "check for the scratch org" 
-            if [ -z $<<parameters.consumerKey>> ]; then
-              echo "Authentication requires a consumer key to be present. Please ensure the <<parameters.consumerKey>> env var has been set correctly."
-              exit 1
+            if ! [ $SC_ORG_USER ]; 
+            then
+              echo "Didn't found scrath org user and so going to use the same sc org" ;
+              ls -d -l
+              ls -a
+              # echo "creating a sc org"
+              # sfdx force:org:create -f ./config/project-scratch-def.json  -a  sc_org --setdefaultusername
+              # echo "Scratch Org successfully created"
+              # sfdx force:org:open
+              # echo "Scratch Org successfully created"
+              # echo sfdx user:list --json > userlist.json
+              # SC_ORG_USER=$(grep -o '"username": "[^"]*' userlist.json | grep -o '[^"]*$')
+              # export SC_ORG_USER
+              # echo "The default username for the scratch org is "
+              # echo $SC_ORG_USER
+              # sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile ./server.key --username $SC_ORG_USER --setdefaultusername
+            else 
+              echo "trying to use the recently created scratch org user"
             fi
-            echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
-            echo "Login to DevHub Org"
-            sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile keys/server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
-            echo "DebHub successfully authenticated"
+            # echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
+            # echo "Login to DevHub Org"
+            # sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile ./server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
+            # echo "DebHub successfully authenticated"
       
-workflows:
+workflow:
   version: 2.1
   validate:
     jobs:
       - dev-auth
+      - get-sc
+      # - deploy-mdt
+      
