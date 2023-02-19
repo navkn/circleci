@@ -23,6 +23,7 @@ jobs:
           command: |
             echo "decode the server key" 
             echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
+            ls -d -l
             echo "Login to DevHub Org"
             sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile keys/server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
             echo "DebHub successfully authenticated"
