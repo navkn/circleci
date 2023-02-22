@@ -3,7 +3,7 @@ jobs:
   dev-auth:
     docker:
       - image: circleci/node:latest
-    working_directory: /tmp
+    working_directory: /temp
     steps:
       - checkout
       - attach_workspace:
@@ -38,7 +38,7 @@ jobs:
   get-sc:
     docker:
       - image: circleci/node:latest
-    working_directory: /tmp
+    working_directory: /temp
     steps:
       - checkout
       - attach_workspace:
