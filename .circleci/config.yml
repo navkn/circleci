@@ -30,7 +30,7 @@ jobs:
             ls -a
             cd tmp
             ls -a
-            echo "Hello, world!" > echo-output
+            echo "Hello, world!" > output
             ls -a
             pwd
             cd ..
@@ -44,9 +44,9 @@ jobs:
             sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile ./server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
             echo "DebHub successfully authenticated"
       - persist_to_workspace:
-          root: /tmp
+          root: tmp
           paths:
-            - echo-output
+            - output
   get-sc:
     docker:
       - image: circleci/node:latest
