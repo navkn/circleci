@@ -61,7 +61,7 @@ jobs:
             pwd
             ls -a
       - attach_workspace:
-          at: /workspace
+          at: /tmp/workspace
       - restore_cache:
           keys:
             - dependency-cache-{{ checksum "package.json" }}
