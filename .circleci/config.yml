@@ -80,11 +80,7 @@ jobs:
           command: |
             pwd
             ls -a
-            cd workspace
-            ls -a
-            cat output
-            cd ..
-            pwd
+            cat /tmp/workspace/output
             echo "check for the scratch org" 
             if ! [ $SC_ORG_USER ]; 
             then
