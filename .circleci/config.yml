@@ -71,8 +71,13 @@ jobs:
       - run: 
           name: Get a Scratch Org 
           command: |
-            ls -d -l
+            pwd
             ls -a
+            cd tmp
+            ls -a
+            cat output
+            cd ..
+            pwd
             echo "check for the scratch org" 
             if ! [ $SC_ORG_USER ]; 
             then
