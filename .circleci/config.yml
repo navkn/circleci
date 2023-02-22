@@ -3,11 +3,11 @@ jobs:
   dev-auth:
     docker:
       - image: circleci/node:latest
-    working_directory: /tmp
+    
     steps:
       - checkout
       - attach_workspace:
-          at: /workspace
+          at: /tmp
       - restore_cache:
           keys:
             - dependency-cache-{{ checksum "package.json" }}
@@ -24,8 +24,9 @@ jobs:
       - run: 
           name: Login to Org
           command: |
-            mkdir -p workspace
-            echo "Hello, world!" > workspace/echo-output
+            ls -d -l
+            # mkdir -p workspace
+            echo "Hello, world!" > tmp/echo-output
             echo "decode the server key" 
             echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
             echo "Login to DevHub Org"
@@ -38,11 +39,11 @@ jobs:
   get-sc:
     docker:
       - image: circleci/node:latest
-    working_directory: /tmp
+    
     steps:
       - checkout
       - attach_workspace:
-          at: /home/workspace
+          at: /workspace
       - restore_cache:
           keys:
             - dependency-cache-{{ checksum "package.json" }}
