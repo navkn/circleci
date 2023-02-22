@@ -3,7 +3,7 @@ jobs:
   dev-auth:
     docker:
       - image: circleci/node:latest
-    working_directory: /temp
+    working_directory: /home
     steps:
       - checkout
       - attach_workspace:
@@ -38,11 +38,11 @@ jobs:
   get-sc:
     docker:
       - image: circleci/node:latest
-    working_directory: /temp
+    working_directory: /home
     steps:
       - checkout
       - attach_workspace:
-          at: /workspace
+          at: /home/workspace
       - restore_cache:
           keys:
             - dependency-cache-{{ checksum "package.json" }}
