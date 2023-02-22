@@ -25,7 +25,8 @@ jobs:
           name: Login to Org
           command: |
             ls -d -l
-            # mkdir -p workspace
+            mkdir -p tmp
+            ls -d -l
             echo "Hello, world!" > tmp/echo-output
             echo "decode the server key" 
             echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
