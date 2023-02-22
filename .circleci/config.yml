@@ -10,8 +10,6 @@ jobs:
           command: |
             echo "checking the pwd"
             pwd
-      - attach_workspace:
-          at: /workspace
       - checkout
       - restore_cache:
           keys:
