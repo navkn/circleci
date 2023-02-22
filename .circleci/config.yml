@@ -24,11 +24,11 @@ jobs:
       - run: 
           name: Login to Org
           command: |
-            ls -d -l
-            cd circleci
+            ls -a
             mkdir -p tmp
+            ls -a
             cd tmp
-            ls -d -l
+            ls -a
             echo "Hello, world!" > echo-output
             echo "decode the server key" 
             echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
@@ -36,7 +36,7 @@ jobs:
             sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile ./server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
             echo "DebHub successfully authenticated"
       - persist_to_workspace:
-          root: circleci/tmp
+          root: /tmp
           paths:
             - echo-output
   get-sc:
