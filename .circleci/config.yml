@@ -24,14 +24,21 @@ jobs:
       - run: 
           name: Login to Org
           command: |
+            pwd
             ls -a
             mkdir -p tmp
             ls -a
             cd tmp
             ls -a
             echo "Hello, world!" > echo-output
+            cd ..
+            cd circleci
+            ls -a
+            cd ..
             echo "decode the server key" 
             echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
+            ls -a
+            pwd
             echo "Login to DevHub Org"
             sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile ./server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
             echo "DebHub successfully authenticated"
