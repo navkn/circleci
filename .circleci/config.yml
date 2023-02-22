@@ -8,11 +8,11 @@ jobs:
       - run:
           name: checking pwd
           command: |
-            echo "chcking the pwd"
+            echo "checking the pwd"
             pwd
-      - checkout
       - attach_workspace:
-          at: /tmp
+          at: /tmp/workspace
+      - checkout
       - restore_cache:
           keys:
             - dependency-cache-{{ checksum "package.json" }}
@@ -41,6 +41,9 @@ jobs:
             cd ..
             pwd
             ls -a
+            cd project
+            ls -a
+            cd ..
             echo "decode the server key" 
             echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
             ls -a
