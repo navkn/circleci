@@ -33,7 +33,7 @@ jobs:
             sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile ./server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
             echo "DebHub successfully authenticated"
       - persist_to_workspace:
-          root: workspace
+          root: /tmp
           paths:
             - echo-output
   get-sc:
@@ -43,7 +43,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /workspace
+          at: /tmp
       - restore_cache:
           keys:
             - dependency-cache-{{ checksum "package.json" }}
