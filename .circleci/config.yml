@@ -31,10 +31,11 @@ jobs:
             cd tmp
             ls -a
             echo "Hello, world!" > echo-output
-            cd ..
-            cd circleci
             ls -a
+            pwd
             cd ..
+            pwd
+            ls -a
             echo "decode the server key" 
             echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
             ls -a
