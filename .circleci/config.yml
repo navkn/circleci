@@ -47,7 +47,19 @@ jobs:
       - image: circleci/node:latest
     
     steps:
+      - run:
+          name: checking pwd
+          command: |
+            echo "checking the pwd"
+            pwd
+            ls -a
       - checkout
+      - run:
+          name: checking pwd
+          command: |
+            echo "checking the pwd"
+            pwd
+            ls -a
       - attach_workspace:
           at: /workspace
       - restore_cache:
