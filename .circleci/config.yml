@@ -11,7 +11,7 @@ jobs:
             echo "checking the pwd"
             pwd
       - attach_workspace:
-          at: /tmp/workspace
+          at: /workspace
       - checkout
       - restore_cache:
           keys:
@@ -30,20 +30,9 @@ jobs:
           name: Login to Org
           command: |
             pwd
+            mkdir -p workspace
+            echo "Hello, world!" > workspace/output
             ls -a
-            mkdir -p tmp
-            ls -a
-            cd tmp
-            ls -a
-            echo "Hello, world!" > output
-            ls -a
-            pwd
-            cd ..
-            pwd
-            ls -a
-            cd project
-            ls -a
-            cd ..
             echo "decode the server key" 
             echo $JWT_ENC | base64 --decode --ignore-garbage > ./server.key
             ls -a
@@ -52,7 +41,7 @@ jobs:
             sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile ./server.key --username $HUB_USER --setdefaultdevhubusername -a DevHub
             echo "DebHub successfully authenticated"
       - persist_to_workspace:
-          root: tmp
+          root: workspace
           paths:
             - output
   get-sc:
@@ -62,7 +51,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /tmp
+          at: /workspace
       - restore_cache:
           keys:
             - dependency-cache-{{ checksum "package.json" }}
@@ -81,7 +70,7 @@ jobs:
           command: |
             pwd
             ls -a
-            cd tmp
+            cd workspace
             ls -a
             cat output
             cd ..
