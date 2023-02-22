@@ -24,10 +24,13 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - node_modules
+      - attach_workspace:
+          at: /tmp/workspace
       - run: 
           name: Login to Org
           command: |
             pwd
+            cat /tmp/workspace/output
             mkdir -p workspace
             echo "Hello, world!" > workspace/output
             ls -a
