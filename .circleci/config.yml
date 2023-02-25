@@ -20,6 +20,8 @@ jobs:
           command: |
             echo "Installing Salesforce CLI"
             sudo npm install -global sfdx-cli
+            pwd
+            ls -a
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
