@@ -21,7 +21,8 @@ jobs:
             sudo npm install -global sfdx-cli
             pwd
             ls -a
-            echo "Hello CircleCi" > output.txt
+            echo "Hello CircleCi" >> output.txt
+            cat output.txt
       - save_cache:
           key: outputfile
           paths:
