@@ -13,8 +13,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - dependency-cache-{{ checksum "package.json" }}
-            - dependency-cache-
+            - outputfile
       - run:
           name: Install Dependencies
           command: |
@@ -22,10 +21,11 @@ jobs:
             sudo npm install -global sfdx-cli
             pwd
             ls -a
+            echo "Hello CircleCi" > output.txt
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: outputfile
           paths:
-            - node_modules
+            - output.txt
       - attach_workspace:
           at: /tmp/workspace
       - run: 
